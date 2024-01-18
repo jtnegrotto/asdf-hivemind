@@ -10,4 +10,4 @@ fetchReleases() {
   curl ${curl_arguments[@]} | jq --raw-output '.[] | .tag_name' | sed 's/^v//'
 }
 
-fetchReleases
+echo "$(fetchReleases | tac | tr '\n' ' ')"
