@@ -11,7 +11,8 @@ installRelease() {
   mkdir -p "$binDir"
   echo "Downloading Hivemind $version from $downloadUrl to $binDir/hivemind"
 
-  curl --silent --location "$downloadUrl" | gzip -N -d > "$binDir/hivemind"
+  cd "$binDir"
+  curl --silent --location "$downloadUrl" | gzip -N -d > hivemind
   chmod +x hivemind
 }
 
