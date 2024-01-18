@@ -20,7 +20,7 @@ getDownloadUrl() {
   tag="v$version"
   platform="$(getPlatform)"
   architecture="$(getArchitecture)"
-  "https://github.com/DarthSim/hivemind/releases/download/$tag/hivemind-$tag-$platform-$architecture.gz"
+  echo "https://github.com/DarthSim/hivemind/releases/download/$tag/hivemind-$tag-$platform-$architecture.gz"
 }
 
 getPlatform() {
