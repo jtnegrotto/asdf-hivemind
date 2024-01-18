@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+installRelease() {
+  installType="$1"
+  version="$2"
+  installPath="$3"
+  binDir="$installPath/bin"
+  downloadUrl="$(getDownloadUrl $version)"
+
+  mkdir -p "$binDir"
+  echo "Downloading Hivemind $version from $downloadUrl to $binDir/hivemind"
+
+  curl --silent --location "$downloadUrl" | gzip -N -d > "$binDir/hivemind"
+  chmod +x hivemind
+}
+
+getDownloadUrl() {
+  version="$1"
+  tag="v$version"
+  platform="$(getPlatform)"
+  architecture="$(getArchitecture)"
+  "https://github.com/DarthSim/hivemind/releases/download/$tag/hivemind-$tag-$platform-$architecture.gz"
+}
+
+getPlatform() {
+  platform="$(uname -s)"
+
+  case "$platform" in 
+  Linux)
+    echo "linux"
+    ;;
+  FreeBSD)
+    echo "freebsd"
+    ;;
+  Darwin)
+    echo "macos"
+    ;;
+  *)
+    echo ""
+  esac
+}
+
+getArchitecture() {
+  architecture="$(uname -m)"
+
+  case "$architecture" in
+  amd64 | arm64 | arm)
+    echo "$architecture"
+    ;;
+  x86_64)
+    echo "amd64"
+    ;;
+  i386 | i686)
+    echo "386"
+    ;;
+  *)
+    echo ""
+  esac
+}
+
+installRelease "$ASDF_INSTALL_TYPE" "$ASDF_INSTALL_VERSION" "$ASDF_INSTALL_PATH"
